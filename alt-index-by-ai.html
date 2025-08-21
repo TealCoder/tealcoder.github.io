@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teal Coder</title>
+  <meta name="description" content="A simple, single‑file portfolio in vanilla HTML + CSS." />
+  <style>
+    /* I had a neat little page laid out here before, but AI made this fancy-pants one for me
+       and I couldn't resist trying it out. */
+
+    :root {
+      --bg: #0b0c10;
+      --panel: #111319;
+      --panel-2: #0e1016;
+      --text: #e7eaf0;
+      --muted: #b7bdc8;
+      --brand: #5da9ff;
+      --brand-contrast: #001833;
+      --tag-bg: #1a2030;
+      --tag-text: #cbd5e1;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 30px rgba(0,0,0,.25);
+      --space-1: .5rem;
+      --space-2: .75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --maxw: 1100px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --panel-2: #ffffff;
+        --text: #0b1220;
+        --muted: #5a6475;
+        --brand: #2266ff;
+        --brand-contrast: #ffffff;
+        --tag-bg: #eef2ff;
+        --tag-text: #304169;
+        --shadow: 0 8px 24px rgba(0,0,0,.08);
+      }
+    }
+
+    /* Base */
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(93,169,255,.08), transparent 60%),
+                  radial-gradient(1000px 500px at 80% -20%, rgba(123,255,220,.06), transparent 60%),
+                  var(--bg);
+      line-height: 1.6;
+    }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    .container { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--space-4); }
+
+    /* Header / Hero */
+    header {
+      padding: clamp(2rem, 5vw, 4rem) 0;  
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: var(--space-5);
+      align-items: center;
+      background: linear-gradient(180deg, var(--panel-2), transparent 60%);
+      padding: var(--space-5);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    @media (max-width: 880px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: .85rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--space-2);
+    }
+    h1 {
+      margin: 0 0 var(--space-3) 0;
+      font-size: clamp(1.8rem, 4.2vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .intro { color: var(--muted); font-size: 1.05rem; }
+
+    .hero-pic {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    /* Projects Section */
+    section#projects { padding: 1rem 0 4rem; }
+    .section-title { font-size: clamp(1.4rem, 2.6vw, 2rem); margin: 0 0 .25rem 0; }
+    .section-sub { color: var(--muted); margin: 0 0 var(--space-4) 0; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      overflow: clip;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.06);
+      display: flex; flex-direction: column;
+    }
+    .thumb {
+      aspect-ratio: 1 / 1;
+      background: var(--bg);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      display: grid;
+      place-items: center;      /* centers small images */
+      overflow: hidden;
+    }
+    .thumb > img.pixelated { image-rendering: pixelated; }
+    
+    .card-body { padding: var(--space-4); display:flex; flex-direction:column; gap: var(--space-3); flex:1; }
+    .card-title { font-size: 1.1rem; margin: 0; letter-spacing: -0.01em; }
+    .card-desc { color: var(--muted); margin: 0; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0; list-style: none; }
+    .tag {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: .3rem .6rem;
+      border-radius: var(--radius-sm);
+      font-size: .85rem;
+      white-space: nowrap;
+    }
+
+    .actions { margin-top: auto; display:flex; gap: .6rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: .5rem; padding: .6rem .85rem;
+      border-radius: 999px; font-weight: 600; font-size: .95rem;
+      background: var(--brand); color: var(--brand-contrast);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    }
+    .btn:hover { filter: brightness(1.05); text-decoration: none; }
+    .btn:focus-visible { outline: 3px solid color-mix(in oklab, var(--brand), white 20%); outline-offset: 2px; }
+    .btn.secondary { background: transparent; color: var(--brand); border: 1px solid color-mix(in oklab, var(--brand), black 35%); box-shadow: none; }
+
+    /* Footer */
+    footer { color: var(--muted); text-align: center; padding: 3rem 0; font-size: .95rem; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: no-preference) {
+      .card { transition: transform .2s ease, box-shadow .2s ease; }
+      .card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,.28); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container hero">
+      <div>
+        <span class="eyebrow">Teal Coder</span>
+        <h1>Hi, I’m Sean. </h1>
+        <p class="intro">I work in embedded computing for US defense applications,
+                         but I can't share any of that. So, here's some unrelated sillyness.
+        </p>
+      </div>
+      <div class="hero-pic">
+        <!-- Replace src with your own image path -->
+        <img src="images/TealCode256.png" alt="The Teal Coder" />
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title" class="section-title">Projects</h2>
+      <p class="section-sub">Nothing in here is expected to be useful. 
+                             These are old projects of mine that make pretty web sites.</p>
+      <div class="grid">
+
+        <article class="card">
+          <img class="thumb" src="images/plane.gif" alt="Plane" />
+          <div class="card-body">
+            <h3 class="card-title">Fighter Jet</h3>
+            <p class="card-desc">Earliest (surviving) game I ever made. </p>
+            <p>
+              Converted manually to javascript.
+              I'd really like to add paralax, but it feels like doing a school project for my kid add features to this.</p>
+            <ul class="tags">
+              <li class="tag">Game</li>
+              <li class="tag">Noisy</li>
+            </ul>
+            <div class="actions">
+              <a class="btn" href="Tyrian/Tyrian.html">Live Demo</a>
+            </div>
+          </div>
+        </article>
+        
+        <article class="card">
+          <img class="thumb" src="images/tailingcar.gif" alt="Car chase" />
+          <div class="card-body">
+            <h3 class="card-title">Road Kill</h3>
+            <p class="card-desc">Silly, gory game made by highschool boys.<br>Converted to JavaScript.</p>
+            <ul class="tags">
+              <li class="tag">Game</li>
+              <li class="tag">Arcade</li>
+            </ul>
+            <div class="actions">
+              <a class="btn" href="RoadKill/That.html">Live Demo</a>
+            </div>
+          </div>
+        </article>
+        
+        <!--
+        <article class="card">
+          <img class="thumb" src="images/PatrioticBugger.gif" alt="VoteBugger" />
+          <div class="card-body">
+            <h3 class="card-title">VoteBugger</h3>
+            <p class="card-desc">Prototype for vote encouragement service.</p>
+            <ul class="tags">
+              <li class="tag">Prototype</li>
+              <li class="tag">Experiment</li>
+            </ul>
+            <div class="actions">
+              <a class="btn" href="VoteBugger/">Live Demo</a>
+            </div>
+          </div>
+        </article>
+      -->
+        
+        <article class="card">
+          <img class="thumb" src="images/pixelHead.gif" alt="Undergrad" />
+          <div class="card-body">
+            <h3 class="card-title">Undergrad Sites</h3>
+            <p class="card-desc">I maintained a personal website through college,<br>but social networks have obsoleted this
+              practice.</p>
+            <ul class="tags">
+              <li class="tag">Personal</li>
+              <li class="tag">Archive</li>
+            </ul>
+            <div class="actions">
+              <a class="btn" href="MyUnderGradHomepages/">Live Demo</a>
+            </div>
+          </div>
+        </article>
+        
+        <article class="card">
+          <img class="thumb" src="images/PaperDancerIcon.png" alt="Paper Doll" />
+          <div class="card-body">
+            <h3 class="card-title">Paper Doll Dancer</h3>
+            <p class="card-desc">Make your friends dance! Early prototype that I'm going to sell to YouTube for $MegaMula.</p>
+            <ul class="tags">
+              <li class="tag">Prototype</li>
+              <li class="tag">Fun</li>
+            </ul>
+            <div class="actions">
+              <a class="btn" href="PaperDollDancer/basic.html">Live Demo</a>
+            </div>
+          </div>
+        </article>
+        
+        <article class="card">
+          <img class="thumb" src="images/OhiaIcon.gif" alt="Ohia" />
+          <div class="card-body">
+            <h3 class="card-title">Ohia</h3>
+            <p class="card-desc">I learned Django making a social network prototype.<br>Here’s a static copy; real version is a
+              security nightmare.</p>
+            <ul class="tags">
+              <li class="tag">Web</li>
+              <li class="tag">Prototype</li>
+            </ul>
+            <div class="actions">
+              <a class="btn" href="ohia-static-snapshot/index.html">Live Demo</a>
+            </div>
+          </div>
+        </article>
+        
+        <article class="card">
+          <img class="thumb" src="images/ContrastTime.gif" alt="Timer" />
+          <div class="card-body">
+            <h3 class="card-title">Contrast-Bath-Timer</h3>
+            <p class="card-desc">30s ice, 30s heat, 30s ice… makes swollen tendons feel nice.</p>
+            <ul class="tags">
+              <li class="tag">Utility</li>
+              <li class="tag">Health</li>
+            </ul>
+            <div class="actions">
+              <a class="btn" href="Contrast-Bath-Timer/">Live Demo</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="y">2025</span> Sean Head</p>
+    </div>
+  </footer>
+</body>
+</html>
